@@ -3,9 +3,9 @@ const router = express.Router();
 
 
 //route GET api/post
-//@desc Test route
+//@desc 
 //@access public
-router.get("/",(req,res)=>res.send("Post route"));
+router.post("/",(req,res)=>res.send("Post route"));
 
 module.exports = router;
 
