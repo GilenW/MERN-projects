@@ -5,7 +5,6 @@ const gravatar = require("gravatar")
 const User = require('../../models/user');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
-
 const config = require('config');
 
 //@desc Register user
@@ -33,7 +32,7 @@ router.post(
 				email,
 			});
 			if (user) {
-				res.status(400).json({
+				return res.status(400).json({
 					errors: [
 						{
 							msg: 'User already exists',
