@@ -252,6 +252,11 @@ router.delete('/experience/:exp_id', auth, async (req, res) =>
 })
 
 
+//route Update api/profile/education
+//@desc Delete profile education
+//@access private
+//Did not implement education, because i dont have this field in the profile model; skip 21 and 22
+
 module.exports = router;
 
 
