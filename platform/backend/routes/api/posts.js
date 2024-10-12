@@ -171,6 +171,89 @@ router.put('/unlike/:id', auth, async (req, res) =>
     }
 })
 
+
+//route POST api/posts/comment/:id
+//@desc     create a comment on a post
+//@access private
+router.post(
+	'/comment/:id',
+	[auth, [check('text', 'Text is required').not().isEmpty()]],
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+
+		try {
+            const user = await User.findById(req.user.id).select('-password');
+
+            const post = await Post.findById(req.params.id);
+
+
+			const newComment = {
+				text: req.body.text,
+				name: user.name,
+				avatar: user.avatar,
+				user: req.user.id,
+			};
+
+            post.comments.unshift(newComment);
+
+            await post.save();
+            res.json(post);
+		} catch (error) {
+			console.error(error.message);
+			res.status(500).send('Server error from posting comment on a post');
+		}
+	}
+);
+
+// route DELETE api/posts/comment/:id/:comment_id
+// @desc     delete a comment on a post
+// @access   private
+router.delete(
+  '/comment/:id/:comment_id',
+  [auth],
+  async (req, res) => {
+    try {
+      const post = await Post.findById(req.params.id);
+
+      // Find the comment
+      const comment = post.comments.find(
+        (comment) => comment.id === req.params.comment_id
+      );
+
+      // Check if the comment exists
+      if (!comment) {
+        return res.status(404).json({ msg: 'Comment does not exist' });
+      }
+
+      // Check user authorization
+      if (comment.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+
+      // Get the index of the comment to be removed
+      const removeIndex = post.comments
+        .map((comment) => comment.id.toString())
+        .indexOf(req.params.comment_id);
+
+      // Remove the comment from the comments array
+        post.comments = post.comments.filter(
+            (comment) => comment.id !== req.params.comment_id
+        );
+
+      // Save the post after removing the comment
+      await post.save();
+
+      res.json({ msg: 'Comment removed', post });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server error while deleting comment');
+    }
+  }
+);
+
 module.exports = router;
 
 
