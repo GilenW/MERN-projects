@@ -11,6 +11,8 @@ import store from './store';
 import Alert from './components/layout/Alert';
 import setAuthToken from './utils/setAuthToken';
 import { loadUser } from './actions/auth';
+import Dashboard from './components/dashboard/Dashboard';
+import PrivateRoute from './routing/PrivateRoute'
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token);
@@ -35,6 +37,9 @@ const App = () => {
 							Component={Register}
 						></Route>
 						<Route exact path='/login' Component={Login}></Route>
+						<Route path='/dashboard' element={<PrivateRoute />}>
+							<Route path='' element={<Dashboard />} />
+						</Route>
 					</Routes>
 				</Fragment>
 			</Router>
