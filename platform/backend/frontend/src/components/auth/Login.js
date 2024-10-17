@@ -1,48 +1,32 @@
-import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../../actions/auth';
 
-const Login = () => {
+const Login = ({ login, isAuthenticated }) => {
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
 	});
 
-	const {  email, password } = formData;
-
+	const { email, password } = formData;
+	const navigate = useNavigate();
 	const onChange = (e) =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async (e) =>
-  {
-    e.preventDefault(); 
-		console.log('Login Successfully!');
-
-		// e.preventDefault();
-		// if (password !== password2) {
-		// 	console.log('passwords do not match');
-		// } else {
-		// 	const newUser = {
-		// 		name,
-		// 		email,
-		// 		password,
-		// 	};
-
-		// 	try {
-		// 		const config = {
-		// 			headers: {
-		// 				// <-- Corrected from 'header' to 'headers'
-		// 				'Content-Type': 'application/json',
-		// 			},
-		// 		};
-		// 		const body = JSON.stringify(newUser);
-		// 		const res = await axios.post('/api/user', body, config);
-		// 		console.log(res.data);
-		// 	} catch (error) {
-		// 		console.error(error.response.data); // <-- Log the full error response
-		// 	}
-		// }
+	const onSubmit = async (e) => {
+		e.preventDefault();
+		login({ email, password });
 	};
+
+	// Redirect if logged in
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate('/dashboard'); // Redirect to dashboard if authenticated
+		}
+	}, [isAuthenticated, navigate]);
 
 	return (
 		<Fragment>
@@ -80,6 +64,13 @@ const Login = () => {
 	);
 };
 
+Login.propTypes = {
+	login: PropTypes.func.isRequired,
+	isAuthenticated: PropTypes.bool,
+};
 
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.auth.isAuthenticated,
+});
 
-export default Login
+export default connect(mapStateToProps, { login })(Login);

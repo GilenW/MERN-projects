@@ -11,6 +11,21 @@ const User = require('../../models/user')
 //route GET api/auth
 //@desc Test route
 //@access public
+router.get('/', auth, async (req, res) =>
+{
+	try
+	{
+		const user = await User.findById(req.user.id).select('-password');
+		res.json(user);
+	} catch (error)
+	{
+		console.error(error.message);
+		res.status(500).send('Server error from get in auth');
+		
+	}
+})
+
+//route POST api/auth
 //@desc Authenticate user and get token
 //@access public
 router.post(
@@ -74,13 +89,6 @@ router.post(
 			res.status(500).send('Server error');
 		}
 
-		//See if user exists
-
-		//Get users gravatar
-
-		//Encrypt password
-
-		//Return jsonwebtoken
 	}
 );
 
