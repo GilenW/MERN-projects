@@ -1,7 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-const Landing = () => {
-  return (
+import React, { Fragment, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Link, useNavigate } from 'react-router-dom';
+
+const Landing = ({ isAuthenticated }) => {
+	const navigate = useNavigate();
+
+	// Redirect if logged in
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate('/dashboard'); // Redirect to dashboard if authenticated
+		}
+	}, [isAuthenticated, navigate]);
+	return (
 		<section className='landing'>
 			<div>
 				<div className='landing-inner'>
@@ -17,7 +28,12 @@ const Landing = () => {
 				</div>
 			</div>
 		</section>
-  );
-}
-
-export default Landing
+	);
+};
+Landing.propTypes = {
+	isAuthenticated: PropTypes.bool.isRequired,
+};
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.auth.isAuthenticated,
+});
+export default connect(mapStateToProps)(Landing);
