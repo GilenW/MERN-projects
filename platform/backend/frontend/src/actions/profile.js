@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { setAlert } from './alert';
-import { GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE } from './types';
+import { ACCOUNT_DELETED, CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE } from './types';
 
 
 import { useNavigate } from 'react-router-dom'; // Import useNavigate where needed
@@ -127,3 +127,68 @@ export const addExperience = (formData, navigate) => async dispatch =>
 }
 
 
+
+//delete experience
+export const deleteExperience = id => async dispatch =>
+{
+	try {
+		const res = await axios.delete(`/api/profile/experience/${id}`);
+				dispatch({
+					type: UPDATE_PROFILE,
+					payload: res.data,
+				});
+
+				dispatch(setAlert('Experience removed', ' success'));
+
+	} catch (error) {
+		const errors = error.response?.data?.errors;
+
+		if (errors) {
+			errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+		}
+
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: error.response?.statusText || 'Server Error',
+				status: error.response?.status || 500,
+			},
+		});
+	}
+}
+
+
+//delete account and profile
+
+export const deleteAccount = (id) => async (dispatch) =>
+{
+	if (window.confirm('Are you sure to delete the account?'))
+	{
+	try{
+		const res = await axios.delete('/api/profile');
+		dispatch({
+			type: CLEAR_PROFILE,
+		});
+		dispatch({
+			type: ACCOUNT_DELETED,
+		});
+
+		dispatch(setAlert('Account removed', ' success'));
+	} catch (error) {
+		const errors = error.response?.data?.errors;
+
+		if (errors) {
+			errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+		}
+
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: error.response?.statusText || 'Server Error',
+				status: error.response?.status || 500,
+			},
+		});
+	}
+	}
+
+};
