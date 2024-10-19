@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
 import { Link } from 'react-router-dom';
 import DashboardActions from './DashboardActions'
+import Experience from './Experience'
 
 const Dashboard = ({
 	getCurrentProfile,
@@ -25,6 +26,7 @@ const Dashboard = ({
 			{profile !== null ? (
 				<Fragment>
 					<DashboardActions></DashboardActions>
+					<Experience experience={profile.experiences}/>
 				</Fragment>
 			) : (
 				<Fragment>
