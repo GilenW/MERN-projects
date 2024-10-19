@@ -1,17 +1,16 @@
 import axios from 'axios';
 import { GET_POSTS, POST_ERROR } from './types';
 
-// Get all posts
 export const getPosts = () => async (dispatch) => {
 	try {
-		const res = await axios.get('/api/posts'); // Make API request to fetch posts
+		const res = await axios.get('/api/post'); // Ensure token is attached
 
 		dispatch({
 			type: GET_POSTS,
-			payload: res.data, // Pass the fetched posts as payload
+			payload: res.data,
 		});
 	} catch (error) {
-		console.error('Error fetching posts:', error); // Log the error for debugging
+		console.error('Error fetching posts:', error);
 
 		dispatch({
 			type: POST_ERROR,

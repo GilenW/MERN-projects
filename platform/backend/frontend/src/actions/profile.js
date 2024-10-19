@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate where need
 // Get the current user's profile
 export const getCurrentProfile = () => async (dispatch) => {
 	try {
-		console.log('profile');
 
 		const res = await axios.get('/api/profile/me', {
 			headers: {
