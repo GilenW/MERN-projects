@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; // For navigation
+import { Link, useNavigate } from 'react-router-dom'; // For navigation
 import { getCurrentProfile, createProfile } from '../../actions/profile';
 
 const CreateProfile = ({
@@ -129,6 +129,10 @@ const CreateProfile = ({
 				className='btn btn-primary'
 				value='Save Profile'
 			/>
+
+			<Link to='/dashboard'>
+				Go Back
+			</Link>
 		</form>
 	);
 };

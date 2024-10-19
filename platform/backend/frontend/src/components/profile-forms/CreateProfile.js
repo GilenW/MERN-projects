@@ -120,6 +120,7 @@ const CreateProfile = ({ createProfile }) => {
 					className='btn btn-primary'
 					value='Create Profile'
 				/>
+				<Link to='/dashboard'>Go Back</Link>
 			</form>
 		</div>
 	);
