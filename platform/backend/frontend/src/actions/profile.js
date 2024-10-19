@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { setAlert } from './alert';
-import { ACCOUNT_DELETED, CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE } from './types';
+import { ACCOUNT_DELETED, CLEAR_PROFILE, GET_PROFILE, GET_PROFILES, PROFILE_ERROR, UPDATE_PROFILE } from './types';
 
 
 import { useNavigate } from 'react-router-dom'; // Import useNavigate where needed
@@ -41,6 +41,73 @@ export const getCurrentProfile = () => async (dispatch) => {
 	}
 };
 
+
+//Get all profiles
+export const getProfiles = () => async dispatch =>
+{
+
+	dispatch({type:CLEAR_PROFILE})
+	try
+	{
+		const res = await axios.get('/api/profile')
+		dispatch({
+			type: GET_PROFILES,
+			payload: res.data,
+		})
+	} catch (error)
+	{
+		console.error('Error:', error) // Log error for debugging
+
+		const errResponse = error.response
+
+		if (errResponse && errResponse.data && errResponse.data.msg)
+		{
+			dispatch(setAlert(errResponse.data.msg, 'danger'))
+		}
+
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: errResponse ? errResponse.statusText : 'Server Error',
+				status: errResponse ? errResponse.status : 500,
+			},
+		})
+	}
+};
+
+
+//Get all profiles
+export const getProfileById = userId => async dispatch =>
+{
+
+	dispatch({type:CLEAR_PROFILE})
+	try
+	{
+		const res = await axios.get(`/api/profile/user/${userId}`);
+		dispatch({
+			type: GET_PROFILE,
+			payload: res.data,
+		})
+	} catch (error)
+	{
+		console.error('Error:', error) // Log error for debugging
+
+		const errResponse = error.response
+
+		if (errResponse && errResponse.data && errResponse.data.msg)
+		{
+			dispatch(setAlert(errResponse.data.msg, 'danger'))
+		}
+
+		dispatch({
+			type: PROFILE_ERROR,
+			payload: {
+				msg: errResponse ? errResponse.statusText : 'Server Error',
+				status: errResponse ? errResponse.status : 500,
+			},
+		})
+	}
+};
 
 
 
