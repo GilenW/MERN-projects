@@ -46,7 +46,7 @@ export const getCurrentProfile = () => async (dispatch) => {
 
 // Create or update profile
 export const createProfile =
-	(formData, navigate, edit = false) =>
+	(formData, edit = false, navigate) =>
 	async (dispatch) => {
 		try {
 			const config = {
