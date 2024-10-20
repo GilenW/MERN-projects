@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addLike, removeLike } from '../../actions/post';
+import { addLike, deletePost, removeLike } from '../../actions/post';
 
 const PostItem = ({
 	addLike,
 	removeLike,
+	deletePost,
 	auth,
 	post: { _id, text, name, user, likes, comments, date },
 }) => (
@@ -29,6 +30,12 @@ const PostItem = ({
 		<Link to={`/post/${_id}`}>
 			Discussion {comments.length > 0 && <span>{comments.length}</span>}
 		</Link>
+
+		{!auth.loading && user === auth.user._id && (
+			<button onClick={() => deletePost(_id)} type='button'>
+				Delete Post
+			</button>
+		)}
 	</div>
 );
 
@@ -54,4 +61,4 @@ const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
 
-export default connect(mapStateToProps, { addLike, removeLike })(PostItem);
+export default connect(mapStateToProps, { addLike, removeLike,deletePost })(PostItem);
