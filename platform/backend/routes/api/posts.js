@@ -103,7 +103,7 @@ router.delete('/:id', auth, async (req, res) => {
 
 
 
-//route PUT api/posts/like/:id
+//route PUT api/post/like/:id
 //@desc    like a post
 //@access private
 router.put('/like/:id', auth, async (req, res) =>
@@ -137,33 +137,33 @@ router.put('/like/:id', auth, async (req, res) =>
 
 
 
-//route PUT api/posts/unlike/:id
+//route PUT api/post/unlike/:id
 //@desc    like a post
 //@access private
 router.put('/unlike/:id', auth, async (req, res) =>
 {
     try {
+		const post = await Post.findById(req.params.id);
 
-        const post = await Post.findById(req.params.id);
+		//check if the post has already been liked
+		if (
+			post.likes.filter((like) => like.user.toString() === req.user.id)
+				.length == 0
+		) {
+			return res.status(400).json({ msg: 'Post has not yet been liked' });
+		}
 
-        //check if the post has already been liked
-        if (post.likes.filter(like => like.user.toString() === req.user.id).length == 0)
-        {
-            return res.status(400).json({ msg: 'Post has not yet been liked' });
+		//get remove index
+		const removeIndex = post.likes
+			.map((like) => like.user.toString())
+			.indexOf(req.user.id);
 
-        }
+		post.likes.splice(removeIndex, 1);
 
-        //get remove index
-        const removeIndex = post.likes.map(like => like.user.toString()).indexOf(req.user.id)
+		await post.save();
 
-        post.likes.splice(removeIndex,1);
-
-        await post.save();
-
-        res.json("unliked done");
-
-
-    } catch (error)
+		res.json(post.likes); // Fix: Return array, not string
+	} catch (error)
     {
         console.error(error.message);
         res.status(500).send("Server error")
