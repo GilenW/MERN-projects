@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DELETE_POST, GET_POSTS, POST_ERROR, UPDATE_LIKES } from './types';
+import { ADD_POST, DELETE_POST, GET_ONE_POST, GET_POSTS, POST_ERROR, UPDATE_LIKES } from './types';
 import { setAlert } from './alert';
 export const getPosts = () => async (dispatch) => {
 	try {
@@ -81,6 +81,60 @@ export const deletePost = (postId) => async (dispatch) => {
 
 	} catch (error) {
 		console.error('Error delete a post:', error);
+
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: error.response?.statusText || 'Server Error',
+				status: error.response?.status || 500,
+			},
+		});
+	}
+};
+
+
+
+
+export const addPost = (formData) => async (dispatch) => {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	};
+	try {
+		const res = await axios.post('/api/post', formData, config); // Ensure token is attached
+		console.log(res)
+		dispatch({
+			type: ADD_POST,
+			payload: res.data,
+		});
+
+		dispatch(setAlert('Post added', 'success'));
+	} catch (error) {
+		console.error('Error adding a post:', error);
+
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: error.response?.statusText || 'Server Error',
+				status: error.response?.status || 500,
+			},
+		});
+	}
+};
+
+
+
+export const getPost = (id) => async (dispatch) => {
+	try {
+		const res = await axios.get(`/api/post/${id}`); // Ensure token is attached
+
+		dispatch({
+			type: GET_ONE_POST,
+			payload: res.data,
+		});
+	} catch (error) {
+		console.error('Error fetching posts:', error);
 
 		dispatch({
 			type: POST_ERROR,

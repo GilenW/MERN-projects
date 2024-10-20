@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getPosts } from '../../actions/post'; // Import action to fetch posts
 import PostItem from './PostItem'; // Optional: Reusable PostItem component
+import PostForm from './PostForm'
 
 const Posts = ({ getPosts, post: { posts, loading } }) => {
 	useEffect(() => {
@@ -16,6 +17,7 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
 	return (
 		<div className='posts'>
 			<h1 className='large text-primary'>Posts</h1>
+			<PostForm></PostForm>
 			<p className='lead'>
 				<i className='fas fa-user' /> Welcome to the community
 			</p>

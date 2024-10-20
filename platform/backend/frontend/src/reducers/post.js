@@ -1,4 +1,4 @@
-import { DELETE_POST, GET_POSTS, POST_ERROR, UPDATE_LIKES } from '../actions/types';
+import { ADD_POST, DELETE_POST, GET_ONE_POST, GET_POSTS, POST_ERROR, UPDATE_LIKES } from '../actions/types';
 
 const initialState = {
 	posts: [], // List of all posts
@@ -18,6 +18,18 @@ export default function postReducer(state = initialState, action) {
 				posts: payload, // Store the fetched posts in state
 				loading: false, // Set loading to false after fetching posts
 			};
+		case ADD_POST:
+			return {
+				...state,
+				posts: [payload,...state.posts],
+				loading:false
+			}
+		case GET_ONE_POST:
+			return {
+				...state,
+				post: payload,
+				loading:false
+			}
 		case DELETE_POST:
 			return {
 				...state,
