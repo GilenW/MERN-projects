@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getPost } from '../../actions/post';
 import { Link, useParams } from 'react-router-dom';
-// import CommentForm from './CommentForm';
-// import CommentItem from './CommentItem';
+import CommentForm from './commentForm';
+import CommentItem from './commentItem';
 
 const Post = ({ getPost, post: { post, loading } }) => {
 	const { id } = useParams(); // Get post ID from URL
@@ -26,7 +26,7 @@ const Post = ({ getPost, post: { post, loading } }) => {
 				<p>Likes: {post.likes.length}</p>
 				<p>Comments: {post.comments.length}</p>
 			</div>
-			{/* <CommentForm postId={post._id} />
+			<CommentForm postId={post._id} />
 
 			<div className='comments'>
 				{post.comments.map((comment) => (
@@ -36,7 +36,7 @@ const Post = ({ getPost, post: { post, loading } }) => {
 						postId={post._id}
 					/>
 				))}
-			</div> */}
+			</div>
 		</div>
 	);
 };

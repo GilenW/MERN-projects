@@ -200,7 +200,7 @@ router.post(
             post.comments.unshift(newComment);
 
             await post.save();
-            res.json(post);
+            res.json(post.comments);
 		} catch (error) {
 			console.error(error.message);
 			res.status(500).send('Server error from posting comment on a post');

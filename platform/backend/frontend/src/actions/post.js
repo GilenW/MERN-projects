@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_POST, DELETE_POST, GET_ONE_POST, GET_POSTS, POST_ERROR, UPDATE_LIKES } from './types';
+import { ADD_COMMENT, ADD_POST, DELETE_POST, GET_ONE_POST, GET_POSTS, POST_ERROR, REMOVE_COMMENT, UPDATE_LIKES } from './types';
 import { setAlert } from './alert';
 export const getPosts = () => async (dispatch) => {
 	try {
@@ -135,6 +135,68 @@ export const getPost = (id) => async (dispatch) => {
 		});
 	} catch (error) {
 		console.error('Error fetching posts:', error);
+
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: error.response?.statusText || 'Server Error',
+				status: error.response?.status || 500,
+			},
+		});
+	}
+};
+
+
+
+export const addComment = (postId, formData) => async (dispatch) => {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	};
+	try {
+		const res = await axios.post(`/api/post/comment/${postId}`, formData, config); // Ensure token is attached
+
+		dispatch({
+			type: ADD_COMMENT,
+			payload: res.data,
+		});
+
+		dispatch(setAlert('Comment added', 'success'));
+	} catch (error) {
+		console.error('Error adding a post:', error);
+
+		dispatch({
+			type: POST_ERROR,
+			payload: {
+				msg: error.response?.statusText || 'Server Error',
+				status: error.response?.status || 500,
+			},
+		});
+	}
+};
+
+
+export const deleteComment = (postId, commentId) => async (dispatch) => {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	};
+	try {
+		const res = await axios.delete(
+			`/api/post/comment/${postId}/${commentId}`,
+			config
+		); // Ensure token is attached
+		console.log(res);
+		dispatch({
+			type: REMOVE_COMMENT,
+			payload: commentId,
+		});
+
+		dispatch(setAlert('Comment removed', 'success'));
+	} catch (error) {
+		console.error('Error adding a post:', error);
 
 		dispatch({
 			type: POST_ERROR,
