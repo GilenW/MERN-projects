@@ -103,7 +103,6 @@ export const addPost = (formData) => async (dispatch) => {
 	};
 	try {
 		const res = await axios.post('/api/post', formData, config); // Ensure token is attached
-		console.log(res)
 		dispatch({
 			type: ADD_POST,
 			payload: res.data,
@@ -188,7 +187,6 @@ export const deleteComment = (postId, commentId) => async (dispatch) => {
 			`/api/post/comment/${postId}/${commentId}`,
 			config
 		); // Ensure token is attached
-		console.log(res);
 		dispatch({
 			type: REMOVE_COMMENT,
 			payload: commentId,

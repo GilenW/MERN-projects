@@ -16,7 +16,6 @@ export const getCurrentProfile = () => async (dispatch) => {
 			},
 		});
 
-		console.log('Response from profile:', res);
 		dispatch({
 			type: GET_PROFILE,
 			payload: res.data,

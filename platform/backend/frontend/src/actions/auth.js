@@ -52,7 +52,6 @@ export const register =
 
 			// Send the user registration request to the server
 			const res = await axios.post('/api/user', body, config);
-			console.log(res.data); // Log the response for now
 
 			dispatch({
 				type: REGISTER_SUCCESS,
@@ -92,7 +91,6 @@ export const login =
 			const body = JSON.stringify(loginUser);
 			// Send the user login request to the server
 			const res = await axios.post('/api/auth', body, config);
-			console.log(res.data); // Log the response for now
 
 			dispatch({
 				type: LOGIN_SUCCESS,
