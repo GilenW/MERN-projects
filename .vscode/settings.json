@@ -1,0 +1,9 @@
+{
+	"docwriter.progress.trackFunctions": false,
+	"docwriter.progress.trackMethods": false,
+	"docwriter.progress.trackClasses": true,
+	"docwriter.progress.trackTypes": true,
+	"Codegeex.Chat.LanguagePreference": "English",
+	"Codegeex.Comment.LanguagePreference": "English",
+	"Codegeex.CommitMessage.LanguagePreference": "English"
+}

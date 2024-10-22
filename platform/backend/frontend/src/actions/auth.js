@@ -1,3 +1,7 @@
+/**
+ * The above code contains actions for user registration, login, logout, loading user data, and handling authentication
+ * errors using Redux and Axios in a React application.
+ */
 import axios from 'axios';
 import { setAlert } from './alert';
 import {

@@ -1,3 +1,7 @@
+/**
+ * The above functions are responsible for handling various actions related to posts, likes, comments, and alerts in a
+ * social media application using Redux and Axios for API calls.
+ */
 import axios from 'axios';
 import { ADD_COMMENT, ADD_POST, DELETE_POST, GET_ONE_POST, GET_POSTS, POST_ERROR, REMOVE_COMMENT, UPDATE_LIKES } from './types';
 import { setAlert } from './alert';
@@ -24,6 +28,12 @@ export const getPosts = () => async (dispatch) => {
 
 
 
+/**
+ * The `addLike` function sends a PUT request to update the likes of a post and dispatches actions based on the response.
+ * @param postId - The `postId` parameter in the `addLike` function represents the unique identifier of the post to which a
+ * like is being added. This identifier is used to make a PUT request to the server to update the likes for that specific
+ * post.
+ */
 export const addLike = (postId) => async (dispatch) => {
 	try {
 		const res = await axios.put(`/api/post/like/${postId}`) // Ensure token is attached
